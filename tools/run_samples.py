@@ -8,6 +8,7 @@ import cv2
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from core.aligner import align_to_reference
+from core.annotator import draw_results
 from core.comparator import compare_parts
 
 SAMPLES = "sample_images"
@@ -19,6 +20,9 @@ def main():
         parts = json.load(f)
 
     test_dir = os.path.join(SAMPLES, "tests")
+    out_dir = os.path.join("data", "sample_results")
+    os.makedirs(out_dir, exist_ok=True)
+
     for name in sorted(os.listdir(test_dir)):
         test = cv2.imread(os.path.join(test_dir, name))
         if test is None:
@@ -27,6 +31,9 @@ def main():
         result = compare_parts(reference, aligned, parts)
         missing = ", ".join(result["missing_parts"]) or "-"
         print(f"{name:32} {result['status']:8} {missing}")
+
+        # boxes wali image save karo taaki aankh se bhi check kar sakein
+        cv2.imwrite(os.path.join(out_dir, name), draw_results(aligned, result))
 
 
 if __name__ == "__main__":
