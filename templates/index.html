@@ -71,10 +71,34 @@
     </div>
   </section>
 
-  {# Step 3: test photos check karna - 7d me bharenge #}
+  {# Step 3: test photos upload karo aur result dekho #}
   <section id="step-3" class="panel hidden">
     <h2>Check photos</h2>
-    <p class="hint">Upload photos of the same board taken the same way.</p>
+    <p class="hint">
+      Board: <strong id="inspect-board-name"></strong>,
+      <span id="inspect-part-count"></span> named parts.
+      Upload photos of the same board taken the same way.
+    </p>
+
+    <label id="test-drop" class="dropzone dropzone-sm">
+      <input id="test-input" type="file" accept="image/png,image/jpeg,image/bmp" multiple hidden>
+      <div class="dropzone-text">
+        <strong>Click to choose photos</strong>
+        <span>or drag and drop up to 10 photos here</span>
+      </div>
+    </label>
+
+    {# chune hue photos ki chhoti list #}
+    <div id="test-files" class="file-chips"></div>
+
+    <div class="actions">
+      <button id="test-clear" class="btn btn-secondary">Clear</button>
+      <button id="test-run" class="btn btn-primary btn-lg" disabled>Check photos</button>
+    </div>
+
+    {# result yahan aayega #}
+    <div id="results-summary" class="summary hidden"></div>
+    <div id="results" class="results"></div>
   </section>
 {% endblock %}
 
@@ -84,4 +108,5 @@
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
   <script src="{{ url_for('static', filename='js/step1.js') }}"></script>
   <script src="{{ url_for('static', filename='js/step2.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/step3.js') }}"></script>
 {% endblock %}

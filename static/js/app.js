@@ -47,6 +47,23 @@ const App = {
     clearTimeout(this.toastTimer);
     this.toastTimer = setTimeout(() => box.classList.add("hidden"), 4000);
   },
+
+  // drag-and-drop wala box - Step 1 aur Step 3 dono isko use kar sakte hain
+  setupDropzone(drop, onFiles) {
+    ["dragenter", "dragover"].forEach((evt) => {
+      drop.addEventListener(evt, (e) => {
+        e.preventDefault();
+        drop.classList.add("dragging");
+      });
+    });
+    ["dragleave", "drop"].forEach((evt) => {
+      drop.addEventListener(evt, (e) => {
+        e.preventDefault();
+        drop.classList.remove("dragging");
+      });
+    });
+    drop.addEventListener("drop", (e) => onFiles(e.dataTransfer.files));
+  },
 };
 
 // stepper pe click karke bhi step badal sakte hain (agar unlocked hai)
