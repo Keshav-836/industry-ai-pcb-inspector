@@ -44,10 +44,31 @@
     </div>
   </section>
 
-  {# Step 2: parts ke boxes draw karna - 7c me bharenge #}
+  {# Step 2: reference photo pe mouse se box bana ke parts ka naam dena #}
   <section id="step-2" class="panel hidden">
-    <h2>Name the parts</h2>
-    <p class="hint">Drag a box around each part and give it a name.</p>
+    <div class="panel-head">
+      <div>
+        <h2>Name the parts</h2>
+        <p class="hint">Drag a box around each part on the photo, then type its name on the right.</p>
+      </div>
+      <button id="parts-save" class="btn btn-primary btn-lg">Save and continue</button>
+    </div>
+
+    <div class="editor">
+      {# photo ke upar transparent canvas - usi pe boxes bante hain #}
+      <div class="editor-stage">
+        <img id="editor-img" alt="Reference board">
+        <canvas id="editor-canvas"></canvas>
+      </div>
+
+      <div class="editor-side">
+        <div class="side-head">
+          <h3 class="sub">Parts (<span id="parts-count">0</span>)</h3>
+          <button id="parts-clear" class="btn btn-secondary btn-sm">Clear all</button>
+        </div>
+        <div id="parts-list" class="parts-list"></div>
+      </div>
+    </div>
   </section>
 
   {# Step 3: test photos check karna - 7d me bharenge #}
@@ -62,4 +83,5 @@
   <script src="{{ url_for('static', filename='js/api.js') }}"></script>
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
   <script src="{{ url_for('static', filename='js/step1.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/step2.js') }}"></script>
 {% endblock %}

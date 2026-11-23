@@ -338,3 +338,125 @@ body {
 .toast-success {
   background: var(--ok);
 }
+
+
+/* card ka heading + right side pe button */
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 8px;
+}
+
+/* Step 2: photo left, parts list right */
+.editor {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .editor {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* photo aur canvas ek ke upar ek */
+.editor-stage {
+  position: relative;
+  line-height: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #111827;
+  user-select: none;
+}
+
+.editor-stage img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.editor-stage canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+}
+
+.side-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.side-head .sub {
+  margin: 0;
+}
+
+.parts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 560px;
+  overflow-y: auto;
+}
+
+.part-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+/* hover wala row orange - photo pe bhi wahi box orange hota hai */
+.part-row:hover {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.part-num {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.input-sm {
+  min-width: 0;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 13px;
+}
+
+/* chhota text wala button, jaise "Remove" */
+.btn-link {
+  padding: 6px;
+  border: none;
+  background: none;
+  color: var(--bad);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
