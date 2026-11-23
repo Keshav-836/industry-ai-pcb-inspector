@@ -14,10 +14,34 @@
     </div>
   </div>
 
-  {# Step 1: reference photo upload - 7b me bharenge #}
+  {# Step 1: naya reference upload karo ya purana board kholo #}
   <section id="step-1" class="panel">
     <h2>Upload the reference board</h2>
     <p class="hint">A photo of a good board with every part in place.</p>
+
+    <div class="two-col">
+      <div>
+        {# label pe click karne se file chooser khulta hai #}
+        <label id="ref-drop" class="dropzone">
+          <input id="ref-input" type="file" accept="image/png,image/jpeg,image/bmp" hidden>
+          <img id="ref-preview" class="dropzone-preview hidden" alt="Reference preview">
+          <div id="ref-drop-text" class="dropzone-text">
+            <strong>Click to choose a photo</strong>
+            <span>or drag and drop it here (PNG, JPG, BMP)</span>
+          </div>
+        </label>
+
+        <div class="form-row">
+          <input id="board-name" class="input" type="text" placeholder="Board name (optional)">
+          <button id="ref-save" class="btn btn-primary" disabled>Use this photo</button>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="sub">Or open a saved board</h3>
+        <div id="board-list" class="board-list"></div>
+      </div>
+    </div>
   </section>
 
   {# Step 2: parts ke boxes draw karna - 7c me bharenge #}
@@ -31,4 +55,11 @@
     <h2>Check photos</h2>
     <p class="hint">Upload photos of the same board taken the same way.</p>
   </section>
+{% endblock %}
+
+{% block scripts %}
+  {# order zaroori hai: pehle api, phir app, phir steps #}
+  <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/step1.js') }}"></script>
 {% endblock %}
