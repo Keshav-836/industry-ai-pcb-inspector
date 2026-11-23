@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {# upar wali 3 steps ki patti - JS isko active/done/locked karega #}
+  <div class="stepper">
+    <div class="step active" data-step="1">
+      <span class="step-num">1</span> Reference board
+    </div>
+    <div class="step locked" data-step="2">
+      <span class="step-num">2</span> Name the parts
+    </div>
+    <div class="step locked" data-step="3">
+      <span class="step-num">3</span> Check photos
+    </div>
+  </div>
+
+  {# Step 1: reference photo upload - 7b me bharenge #}
+  <section id="step-1" class="panel">
+    <h2>Upload the reference board</h2>
+    <p class="hint">A photo of a good board with every part in place.</p>
+  </section>
+
+  {# Step 2: parts ke boxes draw karna - 7c me bharenge #}
+  <section id="step-2" class="panel hidden">
+    <h2>Name the parts</h2>
+    <p class="hint">Drag a box around each part and give it a name.</p>
+  </section>
+
+  {# Step 3: test photos check karna - 7d me bharenge #}
+  <section id="step-3" class="panel hidden">
+    <h2>Check photos</h2>
+    <p class="hint">Upload photos of the same board taken the same way.</p>
+  </section>
+{% endblock %}

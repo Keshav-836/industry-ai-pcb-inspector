@@ -6,19 +6,14 @@ from routes import register_routes
 
 
 def create_app():
-    # app factory pattern - baad me testing aur blueprints easy ho jayenge
+    # app factory pattern - testing aur blueprints dono easy ho jate hain
     app = Flask(__name__)
     app.config.from_object(Config)
 
     # data folder pehli baar run pe khud ban jaye
     os.makedirs(app.config["BOARDS_DIR"], exist_ok=True)
 
-    # abhi ke liye ek simple route, Step 7 me asli page se replace hoga
-    @app.route("/")
-    def home():
-        return "PCB Inspector chal raha hai"
-
-    # saare routes (api wale) yahan judte hain
+    # pages (HTML) aur api (data) dono routes yahan judte hain
     register_routes(app)
 
     return app
