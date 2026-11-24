@@ -64,8 +64,17 @@
       ctx.fillStyle = active ? "rgba(245, 158, 11, 0.18)" : "rgba(31, 111, 235, 0.10)";
       ctx.fillRect(x, y, w, h);
       ctx.strokeRect(x, y, w, h);
-      drawLabel(p.name || "(no name)", x, y, color);
+      // chhote parts pe naam overlap hote the - isliye sirf number dikhao
+      // jis part pe hover hai, sirf uska poora naam dikhao
+      const label = active ? `${i + 1}. ${p.name || "(no name)"}` : String(i + 1);
+      drawLabel(label, x, y, color);
     });
+
+    // hover wale part ka label sabse upar dobara draw karo taaki koi usko dhak na sake
+    if (hovered >= 0 && parts[hovered]) {
+      const p = parts[hovered];
+      drawLabel(`${hovered + 1}. ${p.name || "(no name)"}`, p.x / s, p.y / s, "#f59e0b");
+    }
 
     // jo box abhi drag ho raha hai usko dotted line se dikhao
     if (drawing) {
@@ -128,6 +137,8 @@
       w: Math.round(r.w * s),
       h: Math.round(r.h * s),
     });
+    // naya box hover jaisa dikhe taaki naam type karte waqt dikhta rahe
+    hovered = parts.length - 1;
     renderList();
     draw();
 
