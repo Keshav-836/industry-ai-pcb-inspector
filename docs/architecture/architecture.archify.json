@@ -1,0 +1,255 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "layout": {
+    "mode": "grid",
+    "origin": [
+      40,
+      40
+    ],
+    "cols": 3,
+    "cellW": 250,
+    "cellH": 72,
+    "gapX": 110,
+    "gapY": 80
+  },
+  "meta": {
+    "title": "PCB Inspector: which part is missing (runs offline on one laptop)",
+    "output": "pcb-inspector-architecture.html",
+    "quality_profile": "showcase",
+    "locale": "en"
+  },
+  "components": [
+    {
+      "id": "operator",
+      "type": "external",
+      "label": "Operator",
+      "sublabel": "browser on the same laptop",
+      "row": 0,
+      "col": 1,
+      "size": [
+        240,
+        66
+      ]
+    },
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "Web UI",
+      "sublabel": "3 steps: reference, name parts, check",
+      "tag": "HTML + CSS + JS, no CDN",
+      "row": 1,
+      "col": 1,
+      "size": [
+        240,
+        66
+      ]
+    },
+    {
+      "id": "pages",
+      "type": "backend",
+      "label": "pages.py",
+      "sublabel": "serves the page at /",
+      "row": 2,
+      "col": 0,
+      "size": [
+        240,
+        66
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "api.py",
+      "sublabel": "local routes on 127.0.0.1:5000",
+      "row": 2,
+      "col": 1,
+      "size": [
+        240,
+        66
+      ]
+    },
+    {
+      "id": "storage",
+      "type": "backend",
+      "label": "storage.py",
+      "sublabel": "create, load, save parts",
+      "row": 2,
+      "col": 2,
+      "size": [
+        240,
+        66
+      ]
+    },
+    {
+      "id": "disk",
+      "type": "database",
+      "label": "data/boards/<id>/",
+      "sublabel": "reference.png + board.json",
+      "row": 3,
+      "col": 2,
+      "size": [
+        240,
+        66
+      ]
+    },
+    {
+      "id": "pipeline",
+      "type": "backend",
+      "label": "pipeline.py",
+      "sublabel": "inspect_image()",
+      "row": 3,
+      "col": 1,
+      "size": [
+        240,
+        66
+      ]
+    },
+    {
+      "id": "aligner",
+      "type": "backend",
+      "label": "aligner.py",
+      "sublabel": "ORB + homography + RANSAC",
+      "row": 4,
+      "col": 0,
+      "size": [
+        240,
+        66
+      ]
+    },
+    {
+      "id": "comparator",
+      "type": "backend",
+      "label": "comparator.py",
+      "sublabel": "SSIM + LAB colour, score > 0.35",
+      "row": 4,
+      "col": 1,
+      "size": [
+        240,
+        66
+      ]
+    },
+    {
+      "id": "annotator",
+      "type": "backend",
+      "label": "annotator.py",
+      "sublabel": "red / green boxes, image as data URL",
+      "row": 4,
+      "col": 2,
+      "size": [
+        240,
+        66
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Flask server on 127.0.0.1 (no internet)",
+      "wraps": [
+        "pages",
+        "api",
+        "storage",
+        "disk",
+        "pipeline",
+        "aligner",
+        "comparator",
+        "annotator"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "operator-uses-ui",
+      "from": "operator",
+      "to": "ui",
+      "label": "upload, draw, check",
+      "variant": "emphasis"
+    },
+    {
+      "id": "ui-gets-page",
+      "from": "ui",
+      "to": "pages",
+      "label": "GET /"
+    },
+    {
+      "id": "ui-calls-api",
+      "from": "ui",
+      "to": "api",
+      "label": "photos + boxes",
+      "variant": "emphasis"
+    },
+    {
+      "id": "api-to-storage",
+      "from": "api",
+      "to": "storage",
+      "label": "save / load board"
+    },
+    {
+      "id": "storage-to-disk",
+      "from": "storage",
+      "to": "disk",
+      "label": "PNG + JSON"
+    },
+    {
+      "id": "api-to-pipeline",
+      "from": "api",
+      "to": "pipeline",
+      "label": "each test photo",
+      "variant": "emphasis"
+    },
+    {
+      "id": "pipeline-align",
+      "from": "pipeline",
+      "to": "aligner",
+      "label": "1. align"
+    },
+    {
+      "id": "pipeline-compare",
+      "from": "pipeline",
+      "to": "comparator",
+      "label": "2. compare boxes"
+    },
+    {
+      "id": "pipeline-draw",
+      "from": "pipeline",
+      "to": "annotator",
+      "label": "3. draw result"
+    },
+    {
+      "id": "api-returns",
+      "from": "api",
+      "to": "ui",
+      "label": "OK / MISSING + image",
+      "variant": "dashed"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Offline",
+      "items": [
+        "No online APIs, no cloud, no CDN",
+        "Only OpenCV, NumPy, scikit-image on CPU",
+        "Test photos are checked in memory, not saved"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Decision per part",
+      "items": [
+        "score = 0.5 x (1 - SSIM) + 0.5 x colour change",
+        "Missing if score > 0.35",
+        "Warning if alignment fails"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Code layout",
+      "items": [
+        "core/ has no Flask code",
+        "Can be tested without a browser (tools/)"
+      ]
+    }
+  ]
+}
